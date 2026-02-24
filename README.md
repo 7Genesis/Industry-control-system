@@ -1,3 +1,14 @@
+## 📌 Overview
+
+This project was developed as a technical challenge to demonstrate:
+
+- Backend API architecture
+- Business rule implementation
+- Clean code organization
+- Separation of concerns (API + Frontend)
+- Database integration
+- Responsive frontend layout
+
 # 🏭 Industry Control System
 
 Sistema web para controle de produtos e matérias-primas de uma indústria, com cálculo automático da produção possível com base no estoque disponível.
