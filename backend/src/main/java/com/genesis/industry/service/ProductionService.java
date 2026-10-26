@@ -16,16 +16,21 @@ import java.util.stream.Collectors;
 public class ProductionService {
 
     public ProductionSuggestionDTO calculateProductionSuggestion() {
+        return calculateProductionSuggestion(Product.<Product>listAll(), RawMaterial.<RawMaterial>listAll());
+    }
+
+    // Recebe as listas já carregadas para que o cálculo rode sem banco.
+    ProductionSuggestionDTO calculateProductionSuggestion(List<Product> allProducts, List<RawMaterial> allRawMaterials) {
 
         // 1️⃣ Buscar todos produtos ordenados por preço DESC
-        List<Product> products = Product.<Product>listAll().stream()
+        List<Product> products = allProducts.stream()
                 .sorted((p1, p2) -> p2.price.compareTo(p1.price))
                 .collect(Collectors.toList());
 
         // 2️⃣ Copiar estoque atual para mapa virtual
         Map<Long, Integer> virtualStock = new HashMap<>();
 
-       for (RawMaterial rm : RawMaterial.<RawMaterial>listAll()) {
+       for (RawMaterial rm : allRawMaterials) {
             virtualStock.put(rm.id, rm.stockQuantity);
         }
 
