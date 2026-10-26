@@ -77,7 +77,7 @@ Para apenas compilar: `./mvnw compile`. Para empacotar: `./mvnw package`.
 
 ## Testes
 
-Existe só o teste gerado pelo template do Quarkus (`GreetingResourceTest` e `GreetingResourceIT`), que chama `GET /hello`. Esse endpoint não existe no projeto, então o teste falha com `404`. Não há teste do algoritmo de sugestão nem dos endpoints de negócio.
+A suíte tem 11 testes de unidade em `ProductionServiceTest`, que rodam sem banco de dados. Eles cobrem a prioridade por maior preço, o estoque virtual entre produtos, a divisão inteira, produtos sem matéria-prima, estoque zero ou quantidade usada zero, e o cálculo do valor total com `BigDecimal`. Para isso, o cálculo foi separado em `calculateProductionSuggestion(List<Product>, List<RawMaterial>)`, que recebe as listas já carregadas; o método sem parâmetros só busca os dados e chama esse. Os endpoints HTTP não têm teste.
 
 ```bash
 cd backend
@@ -88,7 +88,7 @@ cd backend
 
 - **Compila** com Java 17 e Quarkus 3.31.4.
 - **Frontend:** a pasta `frontend` aparece no repositório, mas está vazia (referência de submódulo sem conteúdo). Não há interface neste repositório; o que existe aqui é a API.
-- **Testes:** como descrito acima, a suíte atual falha e não cobre a regra de negócio. Escrever testes para `ProductionService` é o próximo passo mais útil.
+- **Testes:** o `ProductionService` tem testes de unidade (veja a seção acima). Os resources e o acesso ao banco não têm teste.
 - **Limitação do algoritmo:** a escolha gulosa por maior preço não garante o maior valor total possível. Um produto caro pode consumir uma matéria-prima que renderia mais se fosse dividida entre dois produtos mais baratos. Em empate de preço, a ordem é a de leitura do banco. Resolver de forma ótima seria um problema de programação inteira.
 - **Validação:** só a associação de matéria-prima a produto valida entrada. Criar e atualizar produtos e matérias-primas não valida campos obrigatórios nem valores negativos.
 - **Configuração:** `application.properties` está com o usuário local de desenvolvimento, CORS liberado para qualquer origem e `import.sql` de exemplo sem dados. Não há Docker Compose nem autenticação. Não é uma configuração para produção.
